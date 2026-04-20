@@ -1,12 +1,10 @@
-library(readxl)
 library(tidyverse)
 library(ggrepel)
 
 # File path
-file_path <- "X:\\COVID19-Challenge studies\\1. Master Files\\CHIM-COV1\\CHIM-COV1\\12.0 Immunology\\Correlates analysis\\COVCHIM01 Correlates analysis\\Combined_nasal_serum_mastersheet_final.13.04.26.xlsx"
+file_path <-  "C:\\Users\\amawer\\GitHub\\COVCHIM01-CoP-analysis\\data\\Combined_nasal_serum_mastersheet_final.csv"
 
-# Read the data from the Excel file
-df <- read_excel(file_path, sheet = 1)
+df <- read.csv(file_path)
 
 
 #Show number of infected vs uninfected
