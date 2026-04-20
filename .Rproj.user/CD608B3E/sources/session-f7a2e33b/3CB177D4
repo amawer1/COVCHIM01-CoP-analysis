@@ -1,0 +1,26 @@
+{
+    "id": "3CB177D4",
+    "path": "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/R scripts/Baseline immune markers heatmap and nasal serum correlation plot.r",
+    "project_path": "R scripts/Baseline immune markers heatmap and nasal serum correlation plot.r",
+    "type": "r_source",
+    "hash": "1079028832",
+    "contents": "",
+    "dirty": false,
+    "created": 1776703609789.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "277,0",
+        "scrollLine": "246"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1776704926,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1776704926057,
+    "read_only": false,
+    "read_only_alternatives": []
+}
