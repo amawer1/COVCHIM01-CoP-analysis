@@ -8,7 +8,6 @@ library(patchwork)
 # File path
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 
-
 df <- read.csv(file_path)
 
 # Filter and log-transform immune variables
@@ -134,7 +133,7 @@ ht <- Heatmap(
   )
 )
 
-# Explicit draw for Jupyter
+# Explicit draw 
 grid::grid.newpage()
 ComplexHeatmap::draw(
   ht,
