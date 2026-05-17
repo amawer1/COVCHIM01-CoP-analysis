@@ -1,0 +1,7 @@
+# R session/history files
+.Rhistory
+.RData
+.Ruserdata
+
+# RStudio project/session state
+.Rproj.user/

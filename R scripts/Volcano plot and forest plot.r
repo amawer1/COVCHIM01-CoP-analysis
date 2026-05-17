@@ -105,6 +105,11 @@ names(OR_table_display) <- c("Marker", "Crude OR (95% CI)", "Crude p", "Adj OR (
 
 OR_table_display
 
+write_xlsx(
+  OR_table_display,
+  path = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/tables/per_marker_logistic_regression_OR_table.xlsx"
+)
+
 plot_df <- results_df %>%
   mutate(
     sig_group = case_when( 
@@ -125,10 +130,8 @@ plot_df <- results_df %>%
   )%>%
 arrange(adj_p)
 
-# Set plot size (adjust width and height as needed)
-options(repr.plot.width = 7, repr.plot.height = 8)
-
-ggplot(plot_df, aes(x = adj_logOR, y = neglogp, label = Marker)) +
+#Volcano plot
+volcano_plot <- ggplot(plot_df, aes(x = adj_logOR, y = neglogp, label = Marker)) +
   geom_point(aes(color = sig_group), size = 2) +
   ggrepel::geom_text_repel(
     data = subset(plot_df, sig_group != "NS"),
@@ -154,16 +157,25 @@ theme_classic() +
     legend.background = element_rect(fill = "white", colour = "black")
   )
 
-# Set plot size (adjust width and height as needed)
-options(repr.plot.width = 7, repr.plot.height = 8)
+volcano_plot
+
+#Save hi res
+ggsave(
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/per_marker_volcano_plot.pdf",
+  plot = volcano_plot,
+  width = 7,
+  height = 8,
+  units = "in",
+  dpi = 300
+)
 
 #To order markers by p value
 forest_df <- plot_df %>%
   arrange(adj_p) %>%
   mutate(Marker = factor(Marker, levels = rev(unique(Marker))))
 
-#plot
-ggplot(forest_df, aes(y = Marker, x = adj_OR, xmin = adj_low, xmax = adj_high, color = sig_group)) +
+#Forest plot
+forest_plot <- ggplot(forest_df, aes(y = Marker, x = adj_OR, xmin = adj_low, xmax = adj_high, color = sig_group)) +
   geom_point(size = 2) +
   geom_errorbarh(height = 0.2) +
   geom_vline(xintercept = 1, linetype = 2) +
@@ -187,3 +199,15 @@ ggplot(forest_df, aes(y = Marker, x = adj_OR, xmin = adj_low, xmax = adj_high, c
   theme(
     legend.background = element_rect(fill = "white", colour = "black")
   )
+
+forest_plot
+
+#Save hi res
+ggsave(
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/forest_plot.pdf",
+  plot = forest_plot,
+  width = 7,
+  height = 8,
+  units = "in",
+  dpi = 300
+)
