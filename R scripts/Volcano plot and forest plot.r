@@ -11,7 +11,7 @@ df <- read.csv(file_path)
 #Show number of infected vs uninfected
 table(df$Quantifiable_shedding)
 
-# Filter immune variables, to remove seasonl CoVs and VoCs
+# Filter immune variables, to remove seasonal CoVs and VoCs
 immune_markers <- df[, grepl("BL", names(df)) & !grepl("Alpha|Delta|Omicron|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
 immune_markers <- immune_markers %>% mutate_if(is.character, as.numeric)
 
@@ -108,7 +108,7 @@ OR_table_display
 
 write_xlsx(
   OR_table_display,
-  path = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/tables/per_marker_logistic_regression_OR_table.xlsx"
+  path = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/tables/single_marker_logistic_regression_OR_table.xlsx"
 )
 
 plot_df <- results_df %>%
@@ -149,7 +149,7 @@ volcano_plot <- ggplot(plot_df, aes(x = adj_logOR, y = neglogp, label = Marker))
   labs(
     x = "Adjusted log(OR)",
     y = "-log10(LRT p-value)",
-    title = "Per-marker logistic regression adjusted for dose",
+    title = "single-marker logistic regression adjusted for dose",
     subtitle = "(BL = baseline, prior to inoculation)",
     color = "Significance"
   ) +
@@ -162,12 +162,11 @@ volcano_plot
 
 #Save hi res
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/per_marker_volcano_plot.pdf",
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/single_marker_volcano_plot.svg",
   plot = volcano_plot,
   width = 7,
   height = 8,
-  units = "in",
-  dpi = 300
+  units = "in"
 )
 
 #To order markers by p value
@@ -193,7 +192,7 @@ forest_plot <- ggplot(forest_df, aes(y = Marker, x = adj_OR, xmin = adj_low, xma
   ) +
   labs(
     y = NULL,
-    title = "Per-marker logistic regression (profile likelihood CIs)",
+    title = "single-marker logistic regression (profile likelihood CIs)",
     subtitle = "(BL = baseline, prior to inoculation)"
   ) +
   theme_classic() +
@@ -205,10 +204,9 @@ forest_plot
 
 #Save hi res
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/forest_plot.pdf",
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/forest_plot.svg",
   plot = forest_plot,
   width = 7,
   height = 8,
-  units = "in",
-  dpi = 300
+  units = "in"
 )

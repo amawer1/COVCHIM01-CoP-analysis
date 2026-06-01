@@ -1,7 +1,10 @@
 library(tidyverse)
 library(glmnet)
 library(logistf)
-library(pheatmap)
+library(ComplexHeatmap)
+library(circlize)
+library(grid)
+
 
 # File path
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
@@ -29,7 +32,7 @@ EN_df <- data.frame(
 )
 
 
-# Make the matrix
+# Make the scaled markers and dose into a matrix
 X_full <- data.frame(
   Dose_numeric = EN_df$Dose_numeric,
   scaled_markers
@@ -75,10 +78,10 @@ failed_runs <- sum(sapply(immune_markers_only, length) == 0)
 successful_runs <- n_iter - failed_runs
 
 
-cat("\nNumber of runs where no immune markers were selected (failed runs):\n")
+cat("Number of runs where no immune markers were selected (failed runs)", "\n")
 print(failed_runs)
 
-cat("\nNumber of runs where at least one variable was selected (successful runs):\n")
+cat("Number of runs where at least one variable was selected (successful runs)", "\n")
 print(successful_runs)
 
 
@@ -90,18 +93,17 @@ var_freq_pct <- immune_markers_only %>%
   `*`(100) %>%
   sort(decreasing = TRUE)
 
-cat("\nPercentage of runs in which each immune marker was selected:\n")
+
+cat("Percentage of runs in which each immune marker was selected","\n")
 print(var_freq_pct)
 
 
 #Plot marker selection frequency
-options(repr.plot.width = 10, repr.plot.height = 10)
-
 var_freq_pct <- as.data.frame(var_freq_pct)
 colnames(var_freq_pct)[1:2] <- c("Marker", "Frequency")
 
 # Create the bar chart
-ggplot(var_freq_pct, aes(x = reorder(Marker, Frequency), y = Frequency)) +
+EN_bar_chart <- ggplot(var_freq_pct, aes(x = reorder(Marker, Frequency), y = Frequency)) +
   geom_col(fill = "#4C72B0") +
   coord_flip() +  
   labs(
@@ -121,8 +123,20 @@ ggplot(var_freq_pct, aes(x = reorder(Marker, Frequency), y = Frequency)) +
   ) +
   ylim(0, max(var_freq_pct$Frequency) * 1.1)
 
-#Plot selection frequency for selected markers in >40% of runs
-options(repr.plot.width = 14, repr.plot.height = 14)
+#print
+print(EN_bar_chart)
+
+#Save hi res
+ggsave(
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/EN_bar_chart.svg",
+  plot = EN_bar_chart,
+  width = 7,
+  height = 6,
+  units = "in"
+)
+
+
+#Plot correlations for selected markers in >40% of runs
 
 # The top selected markers 
 EN_selected_markers <- c(
@@ -152,11 +166,12 @@ col_palette <- colorRampPalette(c(
 # Fixed breaks from -1 to 1
 breaks <- seq(-1, 1, length.out = 101)
 
-pheatmap(
+EN_selected_heatmap <- pheatmap(
   mat = cor_matrix_EN_selected,
   color = col_palette,
   breaks = breaks,
-  main = "Spearman correlation: EN selected markers",
+  name = "Speraman's \u03c1",
+  main = "Spearman correlation's: EN selected markers",
   display_numbers = TRUE,
   number_color = "black",
   fontsize = 12,
@@ -166,9 +181,9 @@ pheatmap(
   border_color = NA
 )
 
+print(EN_selected_heatmap)
 
 #plot correlation heatmap for top markers
-options(repr.plot.width = 14, repr.plot.height = 14)
 
 # The top selected markers 
 top_selected_markers <- c(
@@ -193,11 +208,12 @@ col_palette <- colorRampPalette(c(
 # Fixed breaks from -1 to 1
 breaks <- seq(-1, 1, length.out = 101)
 
-pheatmap(
+EN_top_heatmap <- ComplexHeatmap::pheatmap(
   mat = cor_matrix_top,
   color = col_palette,
   breaks = breaks,
-  main = "Spearman correlation: top immune markers",
+  name = "Spearman's \u03c1",
+  main = "Spearman's correlation: top immune markers",
   display_numbers = TRUE,
   number_color = "black",
   fontsize = 12,
@@ -206,6 +222,30 @@ pheatmap(
   cluster_cols = TRUE,
   border_color = NA
 )
+
+# Display in RStudio
+grid::grid.newpage()
+
+ComplexHeatmap::draw(
+  EN_top_heatmap,
+  heatmap_legend_side = "right"
+)
+
+#Save hi res
+svg(
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/EN_top_heatmap.svg",
+  width = 10,
+  height = 7
+)
+
+grid::grid.newpage()
+ComplexHeatmap::draw(
+  EN_top_heatmap,
+  heatmap_legend_side = "right",
+  newpage = FALSE
+)
+
+dev.off()
 
 #Firth's regression on the selected markers
 
@@ -217,10 +257,9 @@ top_model <- logistf(
 
 summary(top_model)
 
-options(repr.plot.width=5, repr.plot.height=5, repr.plot.res=300)
 
 # Extract coefficients and CIs from logistf model
-forest_df <- data.frame(
+top_model_df <- data.frame(
   term = names(coef(top_model)),
   estimate = coef(top_model),
   conf.low = top_model$ci.lower,
@@ -229,7 +268,7 @@ forest_df <- data.frame(
 )
 
 # Remove intercept and convert log-odds to odds ratios
-forest_df <- forest_df %>%
+top_model_df <- top_model_df %>%
   filter(term != "(Intercept)") %>%
   mutate(
     OR = exp(estimate),
@@ -246,7 +285,7 @@ forest_df <- forest_df %>%
   )
 
 # Forest plot
-ggplot(forest_df, aes(x = OR, y = term_label)) +
+firth_forest <- ggplot(top_model_df, aes(x = OR, y = term_label)) +
   geom_vline(
     xintercept = 1,
     linetype = "dashed",
@@ -273,4 +312,15 @@ ggplot(forest_df, aes(x = OR, y = term_label)) +
     axis.text.y = element_text(colour = "black"),
     axis.text.x = element_text(colour = "black")
   )
+
+print(firth_forest)
+
+#Save hi res
+ggsave(
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/firth_forest.svg",
+  plot = firth_forest,
+  width = 8,
+  height = 6,
+  units = "in"
+)
 

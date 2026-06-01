@@ -1,5 +1,4 @@
 library(tidyverse)
-library(pheatmap)
 library(ComplexHeatmap)
 library(circlize)
 library(grid)
@@ -11,19 +10,15 @@ file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 df <- read.csv(file_path)
 
 # Filter and log-transform immune variables
-markers <- df %>%
-  select(
-    matches("BL", ignore.case = FALSE),
-    -matches("Alpha|Omicron|Delta|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63")
-  ) %>%
-  dplyr::mutate_if(is.character, as.numeric)
+markers <- df[, grepl("BL", names(df)) & !grepl("Alpha|Omicron|Delta|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
+markers<- markers %>% mutate_if(is.character, as.numeric)
 
 #log transform
 log_markers <- log10(markers)
 
 head(log_markers)
 
-# Spearman correlation matrix and heatmap
+# hi res correlation matrix and heatmap
 R <- cor(
   log_markers,
   method = "spearman",
@@ -92,8 +87,8 @@ left_ha <- rowAnnotation(
   annotation_legend_param = list(
     Type = list(
       title = "Marker Type",
-      title_gp = gpar(fontsize = 18),
-      labels_gp = gpar(fontsize = 10)
+      title_gp = gpar(fontsize = 14),
+      labels_gp = gpar(fontsize = 8)
     )
   )
 )
@@ -101,7 +96,7 @@ left_ha <- rowAnnotation(
 # Heatmap object
 ht <- Heatmap(
   R,
-  name = "Spearman rho",
+  name = "hi res's \u03c1",
   col = col_fun,
   
   cluster_rows = TRUE,
@@ -120,20 +115,17 @@ ht <- Heatmap(
   border = FALSE,
   rect_gp = gpar(col = NA),
   
-  column_title = "Spearman correlation of baseline immune markers",
-  column_title_gp = gpar(fontsize = 30, fontface = "bold"),
-  
   heatmap_legend_param = list(
-    title = "Spearman rho",
+    title = "Spearman's \u03c1",
     at = c(-1, -0.5, 0, 0.5, 1),
     labels = c("-1", "-0.5", "0", "0.5", "1"),
     direction = "horizontal",
-    title_gp = gpar(fontsize = 18),
-    labels_gp = gpar(fontsize = 18)
+    title_gp = gpar(fontsize = 14),
+    labels_gp = gpar(fontsize = 10)
   )
 )
 
-# Explicit draw 
+# draw in R
 grid::grid.newpage()
 ComplexHeatmap::draw(
   ht,
@@ -143,6 +135,23 @@ ComplexHeatmap::draw(
   newpage = FALSE
 )
 
+
+#Save hi res
+svg(
+  file = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/heatmap.svg",
+  width = 12,
+  height = 7
+)
+
+ComplexHeatmap::draw(
+  ht,
+  heatmap_legend_side = "bottom",
+  annotation_legend_side = "bottom",
+  merge_legends = TRUE,
+  newpage = TRUE
+)
+
+dev.off()
 
 #Nasal/serum correlation scatter plots
 
@@ -178,8 +187,7 @@ spearman_label <- function(data, label) {
 
   paste0(
     label, ": rho = ", round(unname(cor_result$estimate), 2),
-    ", p = ", format_p(cor_result$p.value),
-    ", n = ", nrow(data)
+    ", p = ", format_p(cor_result$p.value)
   )
 }
 
@@ -230,20 +238,20 @@ make_matched_spearman_scatter <- function(marker_id, Nasal, Serum, data) {
     labs(
       title = marker_id,
       subtitle = subtitle_text,
-      x = paste("Serum", marker_id),
-      y = paste("Nasal", marker_id),
+      x = paste("Serum"),
+      y = paste("Nasal"),
       colour = "Participant group",
       shape = "Participant group"
     ) +
     theme_classic(base_size = 12) +
     theme(
-      plot.title = element_text(face = "bold", size = 12),
-      plot.subtitle = element_text(size = 10),
-      axis.text = element_text(size = 9),
-      axis.title = element_text(size = 10),
+      plot.title = element_text(face = "bold", size = 9),
+      plot.subtitle = element_text(size = 8),
+      axis.text = element_text(size = 8),
+      axis.title = element_text(size = 8),
       legend.position = "bottom",
-      legend.title = element_text(size = 10),
-      legend.text = element_text(size = 9)
+      legend.title = element_text(size = 8),
+      legend.text = element_text(size = 8)
     )
 }
 
@@ -267,11 +275,22 @@ matched_scatter_plots_coloured <- pmap(
 
 names(matched_scatter_plots_coloured) <- matched_marker_pairs$marker_id
 
-wrap_plots(matched_scatter_plots_coloured, ncol = 3) +
+matched_scatter_plots_combined <- wrap_plots(matched_scatter_plots_coloured, ncol = 4) +
   plot_layout(guides = "collect") &
   theme(
     legend.position = "bottom",
-    legend.title = element_text(size = 10),
-    legend.text = element_text(size = 9)
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8)
   )
 
+print(matched_scatter_plots_combined)
+
+
+#Save hi res
+ggsave(
+  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/matched_scatter_plots_combined.svg",
+  plot = matched_scatter_plots_combined,
+  width = 12,
+  height = 7,
+  units = "in",
+)
