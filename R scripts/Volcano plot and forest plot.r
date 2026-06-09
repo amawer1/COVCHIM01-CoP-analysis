@@ -12,7 +12,7 @@ df <- read.csv(file_path)
 table(df$Quantifiable_shedding)
 
 # Filter immune variables, to remove seasonal CoVs and VoCs
-immune_markers <- df[, grepl("BL", names(df)) & !grepl("Alpha|Delta|Omicron|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
+immune_markers <- df[, grepl("BL", names(df)) & !grepl("ORF6|ORF10|Alpha|Delta|Omicron|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
 immune_markers <- immune_markers %>% mutate_if(is.character, as.numeric)
 
 #log10 transform and scale variables for comparison

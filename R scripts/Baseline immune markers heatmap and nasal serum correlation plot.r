@@ -10,7 +10,7 @@ file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 df <- read.csv(file_path)
 
 # Filter and log-transform immune variables
-markers <- df[, grepl("BL", names(df)) & !grepl("Alpha|Omicron|Delta|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
+markers <- df[, grepl("BL", names(df)) & !grepl("ORF10|ORF6|Alpha|Omicron|Delta|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
 markers<- markers %>% mutate_if(is.character, as.numeric)
 
 #log transform
@@ -31,21 +31,21 @@ marker_type <- dplyr::case_when(
   
   grepl("IgG", colnames(R)) &
     grepl("RBD|CoV_2_S|NTD", colnames(R)) &
-    !grepl("_N_", colnames(R)) ~ "Anti-spike IgG",
+    !grepl("_N_", colnames(R)) ~ "Anti-spike IgG antibody",
   
   grepl("IgA", colnames(R)) &
     grepl("RBD|CoV_2_S|NTD", colnames(R)) &
-    !grepl("_N_", colnames(R)) ~ "Anti-spike IgA",
+    !grepl("_N_", colnames(R)) ~ "Anti-spike IgA antibody",
   
   grepl("IgG", colnames(R)) &
-    grepl("_N_", colnames(R)) ~ "Anti-nucleocapsid IgG",
+    grepl("_N_", colnames(R)) ~ "Anti-nucleocapsid IgG antibody",
   
   grepl("IgA", colnames(R)) &
-    grepl("_N_", colnames(R)) ~ "Anti-nucleocapsid IgA",
+    grepl("_N_", colnames(R)) ~ "Anti-nucleocapsid IgA antibody",
   
   grepl("IgM", colnames(R)) ~ "IgM antibody",
   
-  grepl("ELISpot|^T_", colnames(R)) ~ "T cell",
+  grepl("ELISpot", colnames(R)) ~ "T cell",
   
   TRUE ~ "Other"
 )
@@ -55,10 +55,10 @@ names(marker_type) <- colnames(R)
 # Colours
 type_cols <- c(
   "Neutralisation" = "#1f78b4",
-  "Anti-spike IgG" = "#1b9e77",
-  "Anti-spike IgA" = "#66c2a5",
-  "Anti-nucleocapsid IgG" = "#e31a1c",
-  "Anti-nucleocapsid IgA" = "#fb9a99",
+  "Anti-spike IgG antibody" = "#1b9e77",
+  "Anti-spike IgA antibody" = "#66c2a5",
+  "Anti-nucleocapsid IgG antibody" = "#e31a1c",
+  "Anti-nucleocapsid IgA antibody" = "#fb9a99",
   "IgM antibody" = "#ff7f00",
   "T cell" = "#6a3d9a",
   "Other" = "grey70"
@@ -294,3 +294,4 @@ ggsave(
   height = 7,
   units = "in",
 )
+
