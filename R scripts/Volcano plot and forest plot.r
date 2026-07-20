@@ -3,7 +3,7 @@ library(ggrepel)
 library(writexl)
 
 # File path
-file_path <-  "C:\\Users\\amawer\\GitHub\\COVCHIM01-CoP-analysis\\data\\Combined_nasal_serum_mastersheet_final.csv"
+file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 
 df <- read.csv(file_path)
 
@@ -106,9 +106,11 @@ names(OR_table_display) <- c("Marker", "Crude OR (95% CI)", "Crude p", "Adj OR (
 
 OR_table_display
 
+dir.create("Outputs/tables", recursive = TRUE, showWarnings = FALSE)
+
 write_xlsx(
   OR_table_display,
-  path = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/tables/single_marker_logistic_regression_OR_table.xlsx"
+  path = "Outputs/tables/single_marker_logistic_regression_OR_table.xlsx"
 )
 
 plot_df <- results_df %>%
@@ -161,8 +163,10 @@ theme_classic() +
 volcano_plot
 
 #Save hi res
+dir.create("Outputs/figures", recursive = TRUE, showWarnings = FALSE)
+
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/single_marker_volcano_plot.svg",
+  filename = "Outputs/figures/single_marker_volcano_plot.svg",
   plot = volcano_plot,
   width = 7,
   height = 8,
@@ -204,7 +208,7 @@ forest_plot
 
 #Save hi res
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/forest_plot.svg",
+  filename = "Outputs/figures/forest_plot.svg",
   plot = forest_plot,
   width = 7,
   height = 8,

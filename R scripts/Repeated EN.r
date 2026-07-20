@@ -2,9 +2,7 @@ library(tidyverse)
 library(glmnet)
 library(logistf)
 library(ComplexHeatmap)
-library(circlize)
 library(grid)
-
 
 # File path
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
@@ -127,8 +125,10 @@ EN_bar_chart <- ggplot(var_freq_pct, aes(x = reorder(Marker, Frequency), y = Fre
 print(EN_bar_chart)
 
 #Save hi res
+dir.create("Outputs/figures", recursive = TRUE, showWarnings = FALSE)
+
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/EN_bar_chart.svg",
+  filename = "Outputs/figures/EN_bar_chart.svg",
   plot = EN_bar_chart,
   width = 7,
   height = 6,
@@ -170,8 +170,8 @@ EN_selected_heatmap <- pheatmap(
   mat = cor_matrix_EN_selected,
   color = col_palette,
   breaks = breaks,
-  name = "Speraman's \u03c1",
-  main = "Spearman correlation's: EN selected markers",
+  name = "Spearman's \u03c1",
+  main = "Spearman correlations': EN selected markers",
   display_numbers = TRUE,
   number_color = "black",
   fontsize = 12,
@@ -233,7 +233,7 @@ ComplexHeatmap::draw(
 
 #Save hi res
 svg(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/EN_top_heatmap.svg",
+  filename = "Outputs/figures/EN_top_heatmap.svg",
   width = 10,
   height = 7
 )
@@ -317,7 +317,7 @@ print(firth_forest)
 
 #Save hi res
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/firth_forest.svg",
+  filename = "Outputs/figures/firth_forest.svg",
   plot = firth_forest,
   width = 8,
   height = 6,

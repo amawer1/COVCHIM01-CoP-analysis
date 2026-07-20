@@ -1,6 +1,5 @@
 library(tidyverse)
 library(ComplexHeatmap)
-library(circlize)
 library(grid)
 library(patchwork)
 
@@ -137,8 +136,10 @@ ComplexHeatmap::draw(
 
 
 #Save hi res
+dir.create("Outputs/figures", recursive = TRUE, showWarnings = FALSE)
+
 svg(
-  file = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/heatmap.svg",
+  file = "Outputs/figures/heatmap.svg",
   width = 12,
   height = 7
 )
@@ -288,7 +289,7 @@ print(matched_scatter_plots_combined)
 
 #Save hi res
 ggsave(
-  filename = "C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis/Outputs/figures/matched_scatter_plots_combined.svg",
+  filename = "Outputs/figures/matched_scatter_plots_combined.svg",
   plot = matched_scatter_plots_combined,
   width = 12,
   height = 7,
