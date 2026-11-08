@@ -3,21 +3,23 @@ library(ComplexHeatmap)
 library(grid)
 library(patchwork)
 
-# File path
+# Load the data
+
+#Setwd
+setwd("C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis")
+
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 
 df <- read.csv(file_path)
 
-# Filter and log-transform immune variables
+# Select baseline immune markers
 markers <- df[, grepl("BL", names(df)) & !grepl("ORF10|ORF6|Alpha|Omicron|Delta|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63", names(df))]
-markers<- markers %>% mutate_if(is.character, as.numeric)
+markers <- markers %>% mutate(across(where(is.character), as.numeric))
 
-#log transform
+# Log10-transform the markers
 log_markers <- log10(markers)
 
-head(log_markers)
-
-# hi res correlation matrix and heatmap
+# Calculate Spearman correlations
 R <- cor(
   log_markers,
   method = "spearman",
@@ -53,14 +55,13 @@ names(marker_type) <- colnames(R)
 
 # Colours
 type_cols <- c(
-  "Neutralisation" = "#1f78b4",
-  "Anti-spike IgG antibody" = "#1b9e77",
-  "Anti-spike IgA antibody" = "#66c2a5",
-  "Anti-nucleocapsid IgG antibody" = "#e31a1c",
-  "Anti-nucleocapsid IgA antibody" = "#fb9a99",
-  "IgM antibody" = "#ff7f00",
-  "T cell" = "#6a3d9a",
-  "Other" = "grey70"
+  "Neutralisation" = "#9ECAE1",
+  "Anti-spike IgG antibody" = "#08519C",
+  "Anti-spike IgA antibody" = "#4292C6",
+  "Anti-nucleocapsid IgG antibody" = "#A63603",
+  "Anti-nucleocapsid IgA antibody" = "#FDAE6B",
+  "IgM antibody" = "#737373",
+  "T cell" = "#AA4499"
 )
 
 # Correlation colour scale
@@ -77,7 +78,17 @@ top_ha <- HeatmapAnnotation(
   simple_anno_size = unit(4, "mm")
 )
 
-# Left annotation
+# Set the marker type legend order
+legend_order <- c(
+  "Anti-spike IgG antibody",
+  "Anti-spike IgA antibody",
+  "Neutralisation",
+  "Anti-nucleocapsid IgG antibody",
+  "Anti-nucleocapsid IgA antibody",
+  "T cell",
+  "IgM antibody"
+)
+
 left_ha <- rowAnnotation(
   Type = marker_type,
   col = list(Type = type_cols),
@@ -85,17 +96,18 @@ left_ha <- rowAnnotation(
   simple_anno_size = unit(4, "mm"),
   annotation_legend_param = list(
     Type = list(
+      at = legend_order,
       title = "Marker Type",
-      title_gp = gpar(fontsize = 14),
-      labels_gp = gpar(fontsize = 8)
+      title_gp = gpar(fontsize = 7),
+      labels_gp = gpar(fontsize = 5)
     )
   )
 )
 
-# Heatmap object
+# Plot the correlation heatmap
 ht <- Heatmap(
   R,
-  name = "hi res's \u03c1",
+  name = "Spearman's \u03c1",
   col = col_fun,
   
   cluster_rows = TRUE,
@@ -119,31 +131,23 @@ ht <- Heatmap(
     at = c(-1, -0.5, 0, 0.5, 1),
     labels = c("-1", "-0.5", "0", "0.5", "1"),
     direction = "horizontal",
-    title_gp = gpar(fontsize = 14),
-    labels_gp = gpar(fontsize = 10)
+    title_gp = gpar(fontsize = 7),
+    labels_gp = gpar(fontsize = 7)
   )
 )
 
-# draw in R
-grid::grid.newpage()
-ComplexHeatmap::draw(
-  ht,
-  heatmap_legend_side = "bottom",
-  annotation_legend_side = "bottom",
-  merge_legends = TRUE,
-  newpage = FALSE
-)
 
 
-#Save hi res
+# Save the figure
 dir.create("Outputs/figures", recursive = TRUE, showWarnings = FALSE)
 
 svg(
   file = "Outputs/figures/heatmap.svg",
-  width = 12,
-  height = 7
+  width = 8,
+  height = 5
 )
 
+# Draw the heatmap into the SVG file
 ComplexHeatmap::draw(
   ht,
   heatmap_legend_side = "bottom",
@@ -154,7 +158,16 @@ ComplexHeatmap::draw(
 
 dev.off()
 
-#Nasal/serum correlation scatter plots
+# Display the heatmap in R
+ComplexHeatmap::draw(
+  ht,
+  heatmap_legend_side = "bottom",
+  annotation_legend_side = "bottom",
+  merge_legends = TRUE,
+  newpage = TRUE
+)
+
+# Match nasal and serum markers for the scatter plots
 
 matched_marker_pairs <- tibble(
   original_name = colnames(log_markers)
@@ -173,9 +186,19 @@ matched_marker_pairs <- tibble(
     values_from = original_name
   ) %>%
   filter(!is.na(Nasal), !is.na(Serum)) %>%
-  select(marker_id, Nasal, Serum)
-
-matched_marker_pairs
+  select(marker_id, Nasal, Serum)%>%
+  mutate(
+    isotype = str_extract(marker_id, "IgA|IgG|IgM"),
+    antigen_order = case_when(
+      str_detect(marker_id, "_S_BL$")   ~ 1,
+      str_detect(marker_id, "_RBD_BL$") ~ 2,
+      str_detect(marker_id, "_N_BL$")   ~ 3,
+      str_detect(marker_id, "_NTD_BL$") ~ 4,
+      TRUE ~ 5
+    )
+  ) %>%
+  arrange(isotype, antigen_order) %>%
+  select(-isotype, -antigen_order)
 
 format_p <- function(p) {
   ifelse(p < 0.001, "<0.001", formatC(p, format = "f", digits = 3))
@@ -185,15 +208,49 @@ spearman_label <- function(data, label) {
   cor_result <- suppressWarnings(
     cor.test(data$nasal_value, data$serum_value, method = "spearman")
   )
-
+  
   paste0(
-    label, ": rho = ", round(unname(cor_result$estimate), 2),
+    label, ", \u03C1 = ", round(unname(cor_result$estimate), 2),
     ", p = ", format_p(cor_result$p.value)
   )
 }
 
 make_matched_spearman_scatter <- function(marker_id, Nasal, Serum, data) {
   
+  isotype <- str_extract(marker_id, "IgA|IgG|IgM")
+  
+  antigen <- case_when(
+    str_detect(marker_id, "_RBD_BL$") ~ "RBD",
+    str_detect(marker_id, "_NTD_BL$") ~ "NTD",
+    str_detect(marker_id, "_S_BL$")   ~ "S",
+    str_detect(marker_id, "_N_BL$")   ~ "N",
+    TRUE ~ marker_id
+  )
+  
+  plot_title <- paste(isotype, antigen)
+  
+  # Set axis limits for each isotype
+  
+  axis_settings <- switch(
+    isotype,
+    
+    "IgA" = list(
+      xlim = c(0, 5.5),
+      ylim = c(-0.5, 4.5)
+    ),
+    
+    "IgG" = list(
+      xlim = c(0, 6),
+      ylim = c(-0.5, 4.5)
+    ),
+    
+    "IgM" = list(
+      xlim = c(0, 4.5),
+      ylim = c(-1, 2.5)
+    )
+  )
+  
+  # Add vaccination status to the paired measurements
   plot_data <- data %>%
     select(
       Vaccinated,
@@ -207,13 +264,17 @@ make_matched_spearman_scatter <- function(marker_id, Nasal, Serum, data) {
         levels = c("Unvaccinated", "Vaccinated")
       )
     )
-
+  
+  # Show correlations for all participants and vaccinated participants
   subtitle_text <- paste(
     spearman_label(plot_data, "All volunteers"),
-    spearman_label(filter(plot_data, Vaccination_status == "Vaccinated"), "Vaccinated only"),
+    spearman_label(
+      filter(plot_data, Vaccination_status == "Vaccinated"),
+      "Vaccinated only"
+    ),
     sep = "\n"
   )
-
+  
   ggplot(
     plot_data,
     aes(
@@ -223,55 +284,58 @@ make_matched_spearman_scatter <- function(marker_id, Nasal, Serum, data) {
       shape = Vaccination_status
     )
   ) +
-    geom_point(size = 2.4, alpha = 0.85) +
+    geom_point(size = 1.5, alpha = 0.85) +
+    
+    coord_cartesian(
+      xlim = axis_settings$xlim,
+      ylim = axis_settings$ylim
+    ) +
+    
     scale_colour_manual(
       values = c(
         "Unvaccinated" = "black",
         "Vaccinated" = "#2166AC"
       )
     ) +
+    
     scale_shape_manual(
       values = c(
         "Unvaccinated" = 16,
         "Vaccinated" = 15
       )
     ) +
+    
     labs(
-      title = marker_id,
+      title = plot_title,
       subtitle = subtitle_text,
-      x = paste("Serum"),
-      y = paste("Nasal"),
+      x = "Serum",
+      y = "Nasal",
       colour = "Participant group",
       shape = "Participant group"
     ) +
-    theme_classic(base_size = 12) +
+    
+    theme_classic(base_size = 5) +
+    
     theme(
-      plot.title = element_text(face = "bold", size = 9),
-      plot.subtitle = element_text(size = 8),
-      axis.text = element_text(size = 8),
-      axis.title = element_text(size = 8),
+      plot.title = element_text(face = "bold", size = 7),
+      plot.subtitle = element_text(size = 5),
+      axis.text = element_text(size = 5),
+      axis.title = element_text(size = 5),
       legend.position = "bottom",
-      legend.title = element_text(size = 8),
-      legend.text = element_text(size = 8)
+      legend.title = element_text(size = 7),
+      legend.text = element_text(size = 5)
     )
 }
-
-log_markers_with_vax <- df %>%
-  select(
-    Vaccinated,
-    matches("BL"),
-    -matches("Alpha|Omicron|Delta|Beta|Gamma|OC43|229E|HKU|CoV_1|NL63")
-  ) %>%
-  mutate(across(-Vaccinated, ~ log10(as.numeric(.x))))
+# Use the log-transformed markers for the scatter plots
+log_markers_with_vax <- bind_cols(
+  df %>% select(Vaccinated),
+  log_markers
+)
 
 matched_scatter_plots_coloured <- pmap(
   matched_marker_pairs,
-  ~ make_matched_spearman_scatter(
-    marker_id = ..1,
-    Nasal = ..2,
-    Serum = ..3,
-    data = log_markers_with_vax
-  )
+  make_matched_spearman_scatter,
+  data = log_markers_with_vax
 )
 
 names(matched_scatter_plots_coloured) <- matched_marker_pairs$marker_id
@@ -280,19 +344,17 @@ matched_scatter_plots_combined <- wrap_plots(matched_scatter_plots_coloured, nco
   plot_layout(guides = "collect") &
   theme(
     legend.position = "bottom",
-    legend.title = element_text(size = 8),
-    legend.text = element_text(size = 8)
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 5)
   )
 
 print(matched_scatter_plots_combined)
 
-
-#Save hi res
+# Save the figure
 ggsave(
   filename = "Outputs/figures/matched_scatter_plots_combined.svg",
   plot = matched_scatter_plots_combined,
-  width = 12,
-  height = 7,
-  units = "in",
+  width = 8,
+  height = 5,
+  units = "in"
 )
-

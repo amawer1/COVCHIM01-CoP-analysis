@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='180.00pt' height='144.00pt' viewBox='0 0 180.00 144.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHwxODAuMDB8MC4wMHwxNDQuMDA='>
+    <rect x='0.00' y='0.00' width='180.00' height='144.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHwxODAuMDB8MC4wMHwxNDQuMDA=)'>
+<rect x='-0.000000000000016' y='0.00' width='180.00' height='144.00' style='stroke-width: 0.48; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMzMuNjF8MTc3LjUxfDIuNDl8MTI3Ljgz'>
+    <rect x='33.61' y='2.49' width='143.90' height='125.34' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzMuNjF8MTc3LjUxfDIuNDl8MTI3Ljgz)'>
+<rect x='33.61' y='2.49' width='143.90' height='125.34' style='stroke-width: 0.48; stroke: none; fill: #FFFFFF;' />
+<line x1='170.97' y1='8.66' x2='40.15' y2='8.66' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='18.93' x2='40.44' y2='18.93' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='29.20' x2='66.25' y2='29.20' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='39.48' x2='66.53' y2='39.48' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='49.75' x2='67.96' y2='49.75' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='60.03' x2='70.46' y2='60.03' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='70.30' x2='75.48' y2='70.30' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='80.57' x2='80.99' y2='80.57' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='90.85' x2='83.23' y2='90.85' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='101.12' x2='94.59' y2='101.12' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='111.40' x2='99.81' y2='111.40' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<line x1='170.97' y1='121.67' x2='120.54' y2='121.67' style='stroke-width: 1.49; stroke-linecap: butt;' />
+<circle cx='40.15' cy='8.66' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='40.44' cy='18.93' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='66.25' cy='29.20' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='66.53' cy='39.48' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='67.96' cy='49.75' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='70.46' cy='60.03' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='75.48' cy='70.30' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='80.99' cy='80.57' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='83.23' cy='90.85' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='94.59' cy='101.12' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='99.81' cy='111.40' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='120.54' cy='121.67' r='2.49' style='stroke-width: 0.71; fill: #000000;' />
+<line x1='170.97' y1='127.83' x2='170.97' y2='2.49' style='stroke-width: 1.28; stroke-linecap: butt;' />
+</g>
+<g clip-path='url(#cpMC4wMHwxODAuMDB8MC4wMHwxNDQuMDA=)'>
+<polyline points='33.61,127.83 33.61,2.49 ' style='stroke-width: 0.48; stroke-linecap: butt;' />
+<text x='31.37' y='123.10' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='28.64px' lengthAdjust='spacingAndGlyphs'>Serum IgG NTD</text>
+<text x='31.37' y='112.83' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='26.44px' lengthAdjust='spacingAndGlyphs'>Nasal IgA NTD</text>
+<text x='31.37' y='102.55' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='20.89px' lengthAdjust='spacingAndGlyphs'>Nasal IgA S</text>
+<text x='31.37' y='92.28' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='28.88px' lengthAdjust='spacingAndGlyphs'>Serum IgG RBD</text>
+<text x='31.37' y='82.01' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='23.09px' lengthAdjust='spacingAndGlyphs'>Serum IgG S</text>
+<text x='31.37' y='71.73' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='27.09px' lengthAdjust='spacingAndGlyphs'>Nasal IgG NTD</text>
+<text x='31.37' y='61.46' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='27.98px' lengthAdjust='spacingAndGlyphs'>Serum IgA NTD</text>
+<text x='31.37' y='51.18' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='26.67px' lengthAdjust='spacingAndGlyphs'>Nasal IgA RBD</text>
+<text x='31.37' y='40.91' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='28.22px' lengthAdjust='spacingAndGlyphs'>Serum IgA RBD</text>
+<text x='31.37' y='30.64' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='22.44px' lengthAdjust='spacingAndGlyphs'>Serum IgA S</text>
+<text x='31.37' y='20.36' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='21.55px' lengthAdjust='spacingAndGlyphs'>Nasal IgG S</text>
+<text x='31.37' y='10.09' text-anchor='end' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='27.33px' lengthAdjust='spacingAndGlyphs'>Nasal IgG RBD</text>
+<polyline points='32.36,121.67 33.61,121.67 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,111.40 33.61,111.40 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,101.12 33.61,101.12 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,90.85 33.61,90.85 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,80.57 33.61,80.57 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,70.30 33.61,70.30 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,60.03 33.61,60.03 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,49.75 33.61,49.75 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,39.48 33.61,39.48 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,29.20 33.61,29.20 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,18.93 33.61,18.93 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='32.36,8.66 33.61,8.66 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='33.61,127.83 177.51,127.83 ' style='stroke-width: 0.48; stroke-linecap: butt;' />
+<polyline points='41.93,129.08 41.93,127.83 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='74.19,129.08 74.19,127.83 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='106.45,129.08 106.45,127.83 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='138.71,129.08 138.71,127.83 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='170.97,129.08 170.97,127.83 ' style='stroke-width: 0.48; stroke: #333333; stroke-linecap: butt;' />
+<text x='41.93' y='132.94' text-anchor='middle' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='9.09px' lengthAdjust='spacingAndGlyphs'>-0.08</text>
+<text x='74.19' y='132.94' text-anchor='middle' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='9.09px' lengthAdjust='spacingAndGlyphs'>-0.06</text>
+<text x='106.45' y='132.94' text-anchor='middle' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='9.09px' lengthAdjust='spacingAndGlyphs'>-0.04</text>
+<text x='138.71' y='132.94' text-anchor='middle' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='9.09px' lengthAdjust='spacingAndGlyphs'>-0.02</text>
+<text x='170.97' y='132.94' text-anchor='middle' style='font-size: 4.00px;fill: #4D4D4D; font-family: "Arial";' textLength='7.77px' lengthAdjust='spacingAndGlyphs'>0.00</text>
+<text x='105.56' y='140.04' text-anchor='middle' style='font-size: 7.00px; font-family: "Arial";' textLength='92.05px' lengthAdjust='spacingAndGlyphs'>Standardised ridge coefficient</text>
+</g>
+</g>
+</svg>
