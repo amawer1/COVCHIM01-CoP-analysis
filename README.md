@@ -44,4 +44,4 @@ Data are available from the same repository, use Combined_nasal_serum_mastershee
 
 Expected output:
 
-The scripts reproduce figures 2,3 and 4 available witihn the manuscript.
+The scripts reproduce figures 2,3 and 4 available within the manuscript.
