@@ -3,8 +3,6 @@ library(ggrepel)
 library(writexl)
 
 #Setwd
-setwd("C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis")
-
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 df <- read.csv(file_path)
 

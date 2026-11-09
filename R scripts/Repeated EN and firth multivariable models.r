@@ -14,9 +14,6 @@ library(purrr)
 
 # Data preparation --------------------------------------------
 
-#Setwd
-setwd("C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis")
-
 # File path
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 

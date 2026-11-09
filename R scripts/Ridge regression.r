@@ -5,9 +5,7 @@ library(glmnet)
 
 # Data preparation ---------------------------------------------------
 
-#Setwd
-setwd("C:/Users/amawer/GitHub/COVCHIM01-CoP-analysis")
-
+#Set file path
 file_path <- "data/Combined_nasal_serum_mastersheet_final.csv"
 df <- read.csv(file_path)
 
